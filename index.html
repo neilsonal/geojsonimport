@@ -2,7 +2,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
-    <title>ArcGIS Maps SDK for JavaScript Tutorials: Display a map</title>
+    <title>Hosting a GeoJSON</title>
 
     <style>
       html,
@@ -10,7 +10,7 @@
       #viewDiv {
         padding: 0;
         margin: 0;
-        height: 100%;
+        height: 100vh;
         width: 100%;
       }
     </style>
@@ -22,17 +22,35 @@
     esriConfig.apiKey = "AAPKa797ff28cfdb40dbab3320856fd0b5f4NgLkI255Bv0bGtz1Z5pUAwclh2E3CFU03tGSun_a-joPSxRZGmrBPBaWr_BI1o5S";
 
 const map = new Map({
-  basemap: "arcgis/topographic" // basemap styles service
+  basemap: "arcgis/outdoor" // basemap styles service
 });
 const view = new MapView({
           map: map,
-          center: [-118.805, 34.027], // Longitude, latitude
-          zoom: 13, // Zoom level
+          center: [0,0], // Longitude, latitude
+          zoom: 3, // Zoom level
           container: "viewDiv" // Div element
         });
   });
 </script>
-  </head>
+<script>
+  require([
+    "esri/Map",
+    "esri/layers/GeoJSONLayer",
+    "esri/views/MapView"
+  ], function(Map, GeoJSONLayer, MapView) {
+    var url = "CitiesNew.geojson"; // replace with your GeoJSON file path
+
+    var geojsonLayer = new GeoJSONLayer({
+      url: url
+    });
+
+    var map = new Map({
+      basemap: "outdoor", // replace with your preferred basemap
+      layers: [geojsonLayer] // add the GeoJSON layer to the map
+    });
+  });
+</script>
+</head>
   <body>
     <div id="viewDiv"></div>
   </body>
