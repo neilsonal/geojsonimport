@@ -1,58 +1,55 @@
-<html>
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
-    <title>Hosting a GeoJSON</title>
+<!DOCTYPE html>
 
-    <style>
-      html,
-      body,
-      #viewDiv {
-        padding: 0;
-        margin: 0;
-        height: 100vh;
-        width: 100%;
-      }
-    </style>
- <link rel="stylesheet" href="https://js.arcgis.com/4.28/esri/themes/light/main.css">
- <script src="https://js.arcgis.com/4.28/"></script>
+<html lang="en">
 
- <script>
-  require(["esri/config", "esri/Map", "esri/views/MapView"], function(esriConfig, Map, MapView) {
-    esriConfig.apiKey = "AAPKa797ff28cfdb40dbab3320856fd0b5f4NgLkI255Bv0bGtz1Z5pUAwclh2E3CFU03tGSun_a-joPSxRZGmrBPBaWr_BI1o5S";
-
-const map = new Map({
-  basemap: "arcgis/outdoor" // basemap styles service
-});
-const view = new MapView({
-          map: map,
-          center: [0,0], // Longitude, latitude
-          zoom: 3, // Zoom level
-          container: "viewDiv" // Div element
-        });
-  });
-</script>
-<script>
-   fetch('CitiesNew.geojson')
-  require([
-    "esri/Map",
-    "esri/layers/GeoJSONLayer",
-    "esri/views/MapView"
-  ], function(Map, GeoJSONLayer, MapView) {
-    var url = "CitiesNew.geojson"; // replace with your GeoJSON file path
-
-    var geojsonLayer = new GeoJSONLayer({
-      url: url
-    });
-
-    var map = new Map({
-      basemap: "outdoor", // replace with your preferred basemap
-      layers: [geojsonLayer] // add the GeoJSON layer to the map
-    });
-  });
-</script>
-</head>
+<head>
+  <link rel="stylesheet" href="https://js.arcgis.com/4.22/esri/themes/light/main.css">
+  <script src="https://js.arcgis.com/4.22/"></script>
   <body>
-    <div id="viewDiv"></div>
+    <div id="viewDiv" style="width:100vw; height:100vh;"></div>
+    <script>
+      
+      require([
+        "esri/Map",
+        "esri/views/MapView",
+        "esri/layers/GeoJSONLayer",
+        "esri/renderers/SimpleRenderer",
+        "esri/symbols/PictureMarkerSymbol"
+      ], function(Map, MapView, GeoJSONLayer, SimpleRenderer, PictureMarkerSymbol) {
+        var symbol = new PictureMarkerSymbol({
+          url: "buildings.png", // replace with the path to your PNG image
+          width: "48px",
+          height: "48px"
+        });
+
+        var renderer = new SimpleRenderer({
+          symbol: symbol
+        });
+
+        var geojsonLayer = new GeoJSONLayer({
+          url: "CitiesNew.geojson", // replace with your GeoJSON file path
+          renderer: renderer // use the renderer with the PictureMarkerSymbol
+        });
+
+        var map = new Map({
+          basemap: "topo", // replace with your preferred basemap
+          layers: [geojsonLayer] // add the GeoJSON layer to the map
+        });
+
+        var view = new MapView({
+          container: "viewDiv", // replace with your container id
+          map: map,
+          center: [0, 0], // set the initial center to 0,0
+          zoom: 2.9 // set the initial zoom level to 2.5
+        });
+      });
+
+        var view = new MapView({
+          container: "viewDiv", // replace with your container id
+          map: map,
+          zoom: 2.9 // set the initial zoom level
+        });
+    
+    </script>
   </body>
-</html>
+</head>
